@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        *{margin:0px; padding:0px;}
+        body{font-size:14px;}
+        #app{width:1000px; margin:10px auto;}
+        #bigImg{float:left; margin-right:10px;}
+        .item{
+            width:340px;
+            line-height:30px;
+            box-sizing: border-box;
+            background:#f7f7f7;
+            border:1px solid #f7f7f7;
+            margin:10px 0px;
+            float:left;
+        }
+        .item img{vertical-align:middle; margin-right:10px;}
+        .select{ border:1px solid darkred;}
+    </style>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <img id="bigImg"  :src="list[current].bigimgurl"/>
+    <p>颜色选择</p>
+    <div @click="handleclick(index)" v-for="(item,index) in list" :class=['item',{'select':current==index}]><img :src='item.imgurl'/>{{item.name}}</div>
+</div>
+</body>
+<script>
+    new Vue({
+        el:'#app',
+        data(){
+           return{
+            list:[{
+                        name:'静音闹钟创意夜光现代电子钟学生儿童卧室床头闹表懒人时尚小台钟,正方形【白木绿灯】',
+                        bigimgurl:'img/01.jpg',
+                        imgurl:'img/001.jpg'
+                    },
+                    {
+                        name:'静音闹钟创意夜光现代电子钟学生儿童卧室床头闹表懒人时尚小台钟,正方形【竹木白灯】',
+                        bigimgurl:'img/02.jpg',
+                        imgurl:'img/002.jpg'
+                    },
+                    {
+                        name:'静音闹钟创意夜光现代电子钟学生儿童卧室床头闹表懒人时尚小台钟,正方形【黑木红灯】',
+                        bigimgurl:'img/03.jpg',
+                        imgurl:'img/003.jpg'
+                    }
+                ],
+                current:0
+           }
+        },
+        methods:{
+            handleclick(index){
+                this.current = index;
+                
+            }
+        },
+    })
+</script>
+</html>

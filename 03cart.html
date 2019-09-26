@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+        <link type="text/css" rel="stylesheet" href="reset.css"/>
+        <style type="text/css">
+            #cartTable{margin:30px auto; border-collapse: collapse;}
+            td,th{padding:5px 10px;}
+            .txtCnt{width:30px; margin:0px 5px;}
+            button{padding:5px;}
+            .total{font-size:18px; color:darkred; font-weight:800;}
+        </style>
+        <script src="vue.js"></script>
+</head>
+<body>
+    <div id="cart">
+        <table border="1" cellspacing="0" id="cartTable" >
+            <thead>
+                <tr>
+                    <th>全选<input type="checkbox" v-model="output" @change="dochange"></th>
+                    <th>商品序号</th>
+                    <th>商品编号</th>
+                    <th>商品名称</th>
+                    <th>商品数量</th>
+                    <th>商品单价</th>
+                    <th>移出</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,index) in list">
+                    <td>选择<input type="checkbox" :value="index+1" v-model="items"></td>
+                    <td>{{index+1}}</td>
+                    <td>00{{index+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>
+                    <button @click="handleReduce(index)":disabled="item.count === 1"> 
+                    -
+                    </button>
+                    {{item.count}}
+                    <button @click="handleadd(index)">+</button>
+                    </td>
+                    <td>{{item.price}}</td>
+                    <td><button @click="handleremove(index)">移除</button></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr v-if="list.length"><!--购物车中有商品时显示-->
+                    <td colspan="7">总价为：<span class="total">计算总价:{{totalprice}}</span>元</td>
+                </tr>
+                <tr v-else><!--购物车中无商品时显示-->
+                    <td colspan="7">此购物车中无商品</td>
+                </tr>
+            </tfoot>
+        </table>
+        </div>
+</body>
+<script>
+    new Vue({
+        el:'#cart',
+        data(){
+            return{
+                    list:
+                    [
+                        {
+                            name:'iphoneX',
+                            price:6188,
+                            count:1,
+                        },
+                        {
+                            name:'华为p30',
+                            price:5394,
+                            count:1,
+                        },
+                        {
+                            name:'小米redmibook',
+                            price:4299,
+                            count:1,
+                        },
+                        {
+                            name:'华为畅享9e',
+                            price:799,
+                            count:1,
+                        }
+                    ],
+                    items:[],
+                    output:false
+            }
+        },
+        computed:{
+                totalprice:function(){
+                    var total = 0;
+                    for(var i=0;i<this.items.length;i++){
+                    if(this.items[i]==1)total+=this.list[0].count*this.list[0].price
+                    if(this.items[i]==2)total+=this.list[1].count*this.list[1].price
+                    if(this.items[i]==3)total+=this.list[2].count*this.list[2].price
+                    if(this.items[i]==4)total+=this.list[3].count*this.list[3].price
+                }
+
+                    return total.toString().replace(/\B(?=(\d{3})+$)/g,',');
+                    },
+                theitems(){
+                    var s=0;
+                    this.items.forEach(function(item){
+                        s+=parseInt(item);
+                    });
+                    return s;
+                }
+                },
+        watch:{
+            theitems(){
+                if(this.theitems == 10)
+                    this.output = true;
+                else 
+                    this.output = false;
+                }
+            },
+        methods:{
+                    handleReduce:function(index){
+                        if(this.list[index].count===1) return;
+                        this.list[index].count--;
+                    },
+                    handleadd:function(index){
+                        this.list[index].count++;                        
+                    },
+                    handleremove:function(index){
+                        this.list.splice(index,1)
+                    },
+                    dochange:function(){
+                        if(this.output)
+                        this.items=[1,2,3,4];
+                        else this.items=[]
+                    }
+                }
+    })
+</script>
+</html>
